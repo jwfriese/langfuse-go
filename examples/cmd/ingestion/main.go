@@ -3,8 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/henomis/langfuse-go"
-	"github.com/henomis/langfuse-go/model"
+	"github.com/jwfriese/langfuse-go/model"
 )
 
 func main() {
