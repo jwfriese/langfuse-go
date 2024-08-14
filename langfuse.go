@@ -41,6 +41,26 @@ func New(ctx context.Context) *Langfuse {
 	return l
 }
 
+func NewFromConfig(config api.Config, ctx context.Context) *Langfuse {
+	client := api.NewFromConfig(config)
+
+	l := &Langfuse{
+		flushInterval: defaultFlushInterval,
+		client:        client,
+		observer: observer.NewObserver(
+			ctx,
+			func(ctx context.Context, events []model.IngestionEvent) {
+				err := ingest(ctx, client, events)
+				if err != nil {
+					fmt.Println(err)
+				}
+			},
+		),
+	}
+
+	return l
+}
+
 func (l *Langfuse) WithFlushInterval(d time.Duration) *Langfuse {
 	l.flushInterval = d
 	return l
